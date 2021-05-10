@@ -10,3 +10,14 @@ services:
         volumes:
             - ./application:/usr/src/app
             - /usr/src/app/node_modules
+    
+    client:
+        build:
+            context: ./client
+            dockerfile: Dockerfile.dev
+        ports:
+            - "3000:3000"
+        container_name: client
+        volumes:
+            - ./client:/usr/src/app
+            - /usr/src/app/node_modules
