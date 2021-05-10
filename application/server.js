@@ -3,10 +3,8 @@ const path = require("path");
 
 const app = express();
 
-app.use("/static", express.static(path.resolve(__dirname, "client", "assets")));
-
-app.get("/*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "client", "index.html"));
+app.get("/", (req, res) => {
+    res.send("Hello World")
 });
 
 app.listen(process.env.PORT || 8080, () => console.log("Server running..."));
