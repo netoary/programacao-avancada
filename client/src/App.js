@@ -1,7 +1,8 @@
-import logo from "./logo.svg";
 import "./App.css";
 import React, { Suspense, lazy } from "react";
 import { BrowserRouter as Router, Switch, Route, NavLink } from "react-router-dom";
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Container from '@material-ui/core/Container';
 
 const Dashboard = lazy(() => import("./routes/Dashboard"));
 const Posts = lazy(() => import("./routes/Posts"));
@@ -25,19 +26,22 @@ function App() {
                     </NavLink>
                 </nav>
 
-                <Suspense fallback={<div>carregando...</div>}>
-                    <Switch>
-                        <Route path="/posts">
-                            <Posts />
-                        </Route>
-                        <Route path="/settings">
-                            <Settings />
-                        </Route>
-                        <Route path="/">
-                            <Dashboard />
-                        </Route>
-                    </Switch>
-                </Suspense>
+                <CssBaseline />
+                <Container maxWidth="lg">
+                    <Suspense fallback={<div>Carregando...</div>}>
+                        <Switch>
+                            <Route path="/posts">
+                                <Posts />
+                            </Route>
+                            <Route path="/settings">
+                                <Settings />
+                            </Route>
+                            <Route path="/">
+                                <Dashboard />
+                            </Route>
+                        </Switch>
+                    </Suspense>
+                </Container>
             </div>
         </Router>
     );
