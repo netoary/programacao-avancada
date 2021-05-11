@@ -9,4 +9,4 @@ services:
         container_name: client
         volumes:
             - ./client:/usr/src/app
-            - /usr/src/app/node_modules
+            - ./client/node_modules:/usr/src/app/node_modules
