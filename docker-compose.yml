@@ -1,16 +1,5 @@
 version: '3'
 services:
-    application:
-        build:
-            context: ./application
-            dockerfile: Dockerfile.dev
-        ports:
-            - "8080:8080"
-        container_name: application
-        volumes:
-            - ./application:/usr/src/app
-            - /usr/src/app/node_modules
-    
     client:
         build:
             context: ./client
@@ -20,4 +9,4 @@ services:
         container_name: client
         volumes:
             - ./client:/usr/src/app
-            - /usr/src/app/node_modules
+            - ./client/node_modules:/usr/src/app/node_modules
