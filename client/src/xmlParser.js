@@ -1,5 +1,11 @@
-const parser = require('fast-xml-parser');
-const he = require('he');
+import he from 'he';
+import parser from 'fast-xml-parser';
+
+export default function (xmlData)
+{
+    var jsonObj = parser.parse(xmlData, options, true);
+    return jsonObj;
+}
 
 var options = {
     attributeNamePrefix : "",
@@ -16,9 +22,3 @@ var options = {
     attrValueProcessor: (val, attrName) => he.decode(val, {isAttributeValue: true}),//default is a=>a
     tagValueProcessor : (val, tagName) => he.decode(val), //default is a=>a
 };
-
-exports.parseXml = function (xmlData)
-{
-    var jsonObj = parser.parse(xmlData, options, true);
-    return jsonObj;      
-}

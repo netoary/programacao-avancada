@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route, NavLink } from "react-router-do
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 
-const Dashboard = lazy(() => import("./routes/Dashboard"));
+const Overview = lazy(() => import("./routes/Overview"));
 const Posts = lazy(() => import("./routes/Posts"));
 const Settings = lazy(() => import("./routes/Settings"));
 
@@ -14,7 +14,7 @@ function App() {
             <div className="App">
                 <nav className="nav">
                     <NavLink className="nav__link" exact to="/">
-                        Dashboard
+                        Overview
                     </NavLink>
 
                     <NavLink className="nav__link" to="/posts">
@@ -37,7 +37,7 @@ function App() {
                                 <Settings />
                             </Route>
                             <Route path="/">
-                                <Dashboard />
+                                <Overview test="" />
                             </Route>
                         </Switch>
                     </Suspense>
