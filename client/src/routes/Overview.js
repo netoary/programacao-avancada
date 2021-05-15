@@ -4,23 +4,36 @@ import useTitle from '../hooks/use-title';
 import parseXml from '../xmlParser';
 import axios from 'axios';
 
+function parseDateTime(stringValue) {
+  const datePattern = /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})$/;
+  let matches = stringValue.match(datePattern);
+  return new Date(matches[1], matches[2], matches[3], matches[4], matches[5], matches[6]);
+}
+
 function createData(obj) {
   const basicData = obj.Envelope.Body.consultarProcessoResposta.processo.dadosBasicos;
-  const movements = obj.Envelope.Body.consultarProcessoResposta.processo.movimento;
+  const processHistory = obj.Envelope.Body.consultarProcessoResposta.processo.movimento;
 
   const interestedPart = basicData?.polo.find(polo => polo.polo === 'AT')?.parte;
 
+  let history = []
+  processHistory.forEach(movement => {
+    history.push({
+      dateTime: parseDateTime(movement.dataHora.toString()).toLocaleDateString(),
+      message: movement.movimentoNacional?.complemento,
+      documentId: movement.idDocumentoVinculado,
+    });
+  });
+
   return {
       name: 'Teste',
+      date: basicData.dataAjuizamento,
       claimed: interestedPart.pessoa.nome,
       lawyer: interestedPart.advogado[0].nome,
       court: basicData.orgaoJulgador.nomeOrgao,
       processNumber: basicData.numero,
       value: basicData.valorCausa,
-      history: [
-          { date: '2020-01-05', customerId: '11091700', amount: 3 },
-          { date: '2020-01-02', customerId: 'Anonymous', amount: 1 },
-      ],
+      history: history,
   };
 }
 
@@ -33,6 +46,10 @@ class Overview extends React.Component {
   }
 
   async fetchRowsAsync() {
+    if (this.state.rows.length > 0)
+    {
+      return null;
+    }
     return axios.get(
       'teste.xml'
     )

@@ -27,23 +27,19 @@ class RowChild extends React.Component {
                 <Table size="small" aria-label="purchases">
                 <TableHead>
                     <TableRow>
-                    <TableCell>Date</TableCell>
-                    <TableCell>Customer</TableCell>
-                    <TableCell align="right">Amount</TableCell>
-                    <TableCell align="right">Total value ($)</TableCell>
+                        <TableCell>Data</TableCell>
+                        <TableCell>Mensagem</TableCell>
+                        <TableCell>Documento</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {this.props.row.history.map((historyRow) => (
                     <TableRow key={historyRow.date}>
                         <TableCell component="th" scope="this.row">
-                        {historyRow.date}
+                        {historyRow.dateTime}
                         </TableCell>
-                        <TableCell>{historyRow.customerId}</TableCell>
-                        <TableCell align="right">{historyRow.amount}</TableCell>
-                        <TableCell align="right">
-                        {Math.round(historyRow.amount * this.props.row.value * 100) / 100}
-                        </TableCell>
+                        <TableCell>{historyRow.message}</TableCell>
+                        <TableCell>{historyRow.documentId}</TableCell>
                     </TableRow>
                     ))}
                 </TableBody>
