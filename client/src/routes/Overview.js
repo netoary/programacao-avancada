@@ -13,7 +13,7 @@ function createData(obj) {
   return {
       name: 'Teste',
       claimed: interestedPart.pessoa.nome,
-      lawyer: interestedPart.advogado[0],
+      lawyer: interestedPart.advogado[0].nome,
       court: basicData.orgaoJulgador.nomeOrgao,
       processNumber: basicData.numero,
       value: basicData.valorCausa,
@@ -47,7 +47,7 @@ class Overview extends React.Component {
 
   render() {
     this.fetchRowsAsync();
-
+    
     return (
         <div>
             <h1>Overview</h1>

@@ -57,7 +57,7 @@ export default function Row(props) {
             {row.name}
           </TableCell>
           <TableCell>{row.claimed}</TableCell>
-          <TableCell>{row.advogado}</TableCell>
+          <TableCell>{row.lawyer}</TableCell>
           <TableCell>{row.court}</TableCell>
           <TableCell>{row.processNumber}</TableCell>
         </TableRow>
