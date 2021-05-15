@@ -12,7 +12,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import RowChild from './RowChild';
+import History from './History';
 
 const useRowStyles = makeStyles({
     root: {
@@ -64,7 +64,7 @@ export default function Row(props) {
         <TableRow>
           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
             <Collapse in={open} timeout="auto" unmountOnExit>
-                <RowChild row={row} />
+                <History row={row} />
             </Collapse>
           </TableCell>
         </TableRow>

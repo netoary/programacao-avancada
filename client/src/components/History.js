@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
-class RowChild extends React.Component {
+class History extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -49,4 +49,4 @@ class RowChild extends React.Component {
     }
 }
 
-export default RowChild;
+export default History;
