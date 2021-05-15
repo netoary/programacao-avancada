@@ -27,9 +27,9 @@ class History extends React.Component {
                 <Table size="small" aria-label="purchases">
                 <TableHead>
                     <TableRow>
-                        <TableCell>Data</TableCell>
-                        <TableCell>Mensagem</TableCell>
-                        <TableCell>Documento</TableCell>
+                        <TableCell><b>Data</b></TableCell>
+                        <TableCell><b>Mensagem</b></TableCell>
+                        <TableCell><b>Documento</b></TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
