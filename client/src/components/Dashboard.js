@@ -51,7 +51,7 @@ class Dashboard extends React.Component {
     
     handleChangeRowsPerPage = (event) => {
         this.setState({rowsPerPage: parseInt(event.target.value, 10)});
-        this.setStateet({page: 0});
+        this.setState({page: 0});
     };
 
     useStyles = makeStyles((theme) => ({
