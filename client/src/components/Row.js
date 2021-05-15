@@ -62,12 +62,6 @@ export default function Row(props) {
           <TableCell>{row.court}</TableCell>
           <TableCell>{row.processNumber}</TableCell>
         </TableRow>
-        {/* <Modal open={open}
-          onClose={setOpen(!open)}
-          aria-labelledby="simple-modal-title"
-          aria-describedby="simple-modal-description">
-          <History row={row}/>
-        </Modal> */}
         <TableRow>
           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
             <Collapse in={open} timeout="auto" unmountOnExit>
@@ -75,6 +69,13 @@ export default function Row(props) {
             </Collapse>
           </TableCell>
         </TableRow>
+        {/* <Modal open={open}
+          onClose={setOpen(!open)}
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description">
+          <History row={row}/>
+        </Modal> */}
       </React.Fragment>
+      
     );
   }
