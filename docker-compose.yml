@@ -6,7 +6,19 @@ services:
             dockerfile: Dockerfile.dev
         ports:
             - "3000:3000"
-        container_name: client
+        container_name: dev-client
         volumes:
             - ./client:/usr/src/app
             - ./client/node_modules:/usr/src/app/node_modules
+
+    application:
+        build:
+            context: ./
+            dockerfile: Dockerfile.dev
+        ports:
+            - "3001:3001"
+        container_name: application
+        volumes:
+            - ./client:/usr/src/client
+            - ./server:/usr/src/app
+            - ./server/node_modules:/usr/src/app/node_modules
