@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
-class RowChild extends React.Component {
+class History extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -27,23 +27,19 @@ class RowChild extends React.Component {
                 <Table size="small" aria-label="purchases">
                 <TableHead>
                     <TableRow>
-                    <TableCell>Date</TableCell>
-                    <TableCell>Customer</TableCell>
-                    <TableCell align="right">Amount</TableCell>
-                    <TableCell align="right">Total value ($)</TableCell>
+                        <TableCell><b>Data</b></TableCell>
+                        <TableCell><b>Mensagem</b></TableCell>
+                        <TableCell><b>Documento</b></TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {this.props.row.history.map((historyRow) => (
                     <TableRow key={historyRow.date}>
                         <TableCell component="th" scope="this.row">
-                        {historyRow.date}
+                        {historyRow.dateTime}
                         </TableCell>
-                        <TableCell>{historyRow.customerId}</TableCell>
-                        <TableCell align="right">{historyRow.amount}</TableCell>
-                        <TableCell align="right">
-                        {Math.round(historyRow.amount * this.props.row.value * 100) / 100}
-                        </TableCell>
+                        <TableCell>{historyRow.message}</TableCell>
+                        <TableCell>{historyRow.documentId}</TableCell>
                     </TableRow>
                     ))}
                 </TableBody>
@@ -53,4 +49,4 @@ class RowChild extends React.Component {
     }
 }
 
-export default RowChild;
+export default History;
