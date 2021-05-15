@@ -17,7 +17,7 @@ function createData(obj) {
   const interestedPart = basicData?.polo.find(polo => polo.polo === 'AT')?.parte;
 
   let history = []
-  processHistory.forEach(movement => {
+  processHistory.sort((a, b) => b.dataHora - a.dataHora).forEach(movement => {
     history.push({
       dateTime: parseDateTime(movement.dataHora.toString()).toLocaleDateString(),
       message: movement.movimentoNacional?.complemento,
