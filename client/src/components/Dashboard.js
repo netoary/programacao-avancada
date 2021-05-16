@@ -4,7 +4,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import Paper from '@material-ui/core/Paper';
 import Modal from '@material-ui/core/Modal';
 import History from './History';
-import { makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
 import Chip from '@material-ui/core/Chip';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { DataGrid, useGridSlotComponentProps, ptBR } from '@material-ui/data-grid';
@@ -14,9 +14,17 @@ import IconButton from '@material-ui/core/IconButton';
 const theme = createMuiTheme(
   ptBR,
 );
+
+const styles = theme => ({
+        tagCell: {
+        flexWrap: 'wrap',
+    }
+  });
+
 class Dashboard extends React.Component {
     constructor(props) {
         super(props);
+        const { classes } = this.props;
         this.state = {
             open: false,
             history: []
@@ -40,7 +48,7 @@ class Dashboard extends React.Component {
             { field: 'lawyer', headerName: 'ADV', flex: 0.8 },
             { field: 'court', headerName: 'Vara', width: 200 },
             { field: 'id', headerName: 'Processo', width: 175 },
-            { field: 'tags', headerName: 'Tags', width: 150, overflow:'wrap',
+            { field: 'tags', headerName: 'Tags', width: 150, cellClassName:classes.tagCell,
                 renderCell: (params) => (
                     params.value.map((tag) => (
                         <Chip variant="outlined" color="secondary" size="small" label={tag} />
@@ -63,17 +71,6 @@ class Dashboard extends React.Component {
         this.setState({open: !this.state.open});
     };
 
-    useStyles = makeStyles((theme) => ({
-        paper: {
-            position: 'absolute',
-            width: 400,
-            backgroundColor: theme.palette.background.paper,
-            border: '2px solid #000',
-            boxShadow: theme.shadows[5],
-            padding: theme.spacing(2, 4, 3),
-            },
-    }));
-
     render(){
         return (
             <div style={{ height: 400, width: '100%' }}>
@@ -88,11 +85,7 @@ class Dashboard extends React.Component {
               aria-labelledby="simple-modal-title"
               aria-describedby="simple-modal-description">
               <div style={{backgroundColor: 'white', position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', overflow: 'scroll', height: '70%'}}>
-                <TableContainer component={Paper}>
-                    <TableBody>
-                        <History row={this.state.history}/>
-                    </TableBody>
-                </TableContainer>
+                <History row={this.state.history}/>
               </div>
             </Modal>
             </div>
@@ -100,4 +93,4 @@ class Dashboard extends React.Component {
     }
 }
 
-export default Dashboard;
+export default withStyles(styles, { withTheme: true })(Dashboard);
