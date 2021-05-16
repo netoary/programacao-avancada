@@ -24,16 +24,17 @@ function createData(obj) {
       documentId: movement.idDocumentoVinculado,
     });
   });
-
+  
   return {
       name: requestingPart.pessoa.nome,
       date: basicData.dataAjuizamento,
       claimed: interestedPart.pessoa.nome,
       lawyer: interestedPart.advogado[0].nome,
       court: basicData.orgaoJulgador.nomeOrgao,
-      processNumber: basicData.numero,
+      id: basicData.numero,
       value: basicData.valorCausa,
       history: history,
+      tags: basicData.tags.tag,
   };
 }
 
