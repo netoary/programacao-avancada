@@ -13,6 +13,8 @@ import Typography from '@material-ui/core/Typography';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import History from './History';
+import SearchIcon from '@material-ui/icons/Search';
+// import Modal from '@material-ui/core/Modal';
 
 const useRowStyles = makeStyles({
     root: {
@@ -41,7 +43,7 @@ const propTypes = {
 };
 
 export default function Row(props) {
-    const { row } = props;
+    const { row, modalOpen, history } = props;
     const [open, setOpen] = React.useState(false);
     const classes = useRowStyles();
 
@@ -49,11 +51,16 @@ export default function Row(props) {
       <React.Fragment>
         <TableRow className={classes.root}>
           <TableCell>
-            <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
-              {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            <IconButton aria-label="expand row" size="small" onClick={() => {
+              setOpen(!open);
+              modalOpen();
+              history(row);
+              }}>
+              {/* {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />} */}
+              <SearchIcon/>
             </IconButton>
           </TableCell>
-          <TableCell component="th" scope="row">
+          <TableCell scope="row">
             {row.name}
           </TableCell>
           <TableCell>{row.claimed}</TableCell>
@@ -61,13 +68,20 @@ export default function Row(props) {
           <TableCell>{row.court}</TableCell>
           <TableCell>{row.processNumber}</TableCell>
         </TableRow>
-        <TableRow>
+        {/* <TableRow>
           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
             <Collapse in={open} timeout="auto" unmountOnExit>
                 <History row={row} />
             </Collapse>
           </TableCell>
-        </TableRow>
+        </TableRow> */}
+        {/* <Modal open={open}
+          onClose={setOpen(!open)}
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description">
+          <History row={row}/>
+        </Modal> */}
       </React.Fragment>
+      
     );
   }
