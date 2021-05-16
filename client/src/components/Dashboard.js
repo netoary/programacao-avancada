@@ -67,7 +67,7 @@ class Dashboard extends React.Component {
 
     render(){
         return (
-            <>
+            <div>
             <TableContainer component={Paper}>
                 <Table aria-label="collapsible table">
                     <TableHead>
