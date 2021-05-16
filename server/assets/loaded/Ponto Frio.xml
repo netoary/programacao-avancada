@@ -4,7 +4,12 @@
          <sucesso>true</sucesso>
          <mensagem>Processo consultado com sucesso</mensagem>
          <processo>
-            <ns2:dadosBasicos numero="00390682620158110041" competencia="19" classeProcessual="156" codigoLocalidade="0041" nivelSigilo="0" intervencaoMP="false" tamanhoProcesso="114246957" dataAjuizamento="20150818000000">
+            <ns2:dadosBasicos numero="003906826201581108481" competencia="19" classeProcessual="156" codigoLocalidade="0041" nivelSigilo="0" intervencaoMP="false" tamanhoProcesso="114246957" dataAjuizamento="20150818000000">
+               
+               <ns2:tags>
+                  <tag>Pequenas causas</tag>
+                  <tag>Individual</tag>
+               </ns2:tags>
                <ns2:polo polo="AT">
                   <ns2:parte assistenciaJudiciaria="true" intimacaoPendente="0">
                      <ns2:pessoa nome="PONTO FRIO S.A." dataNascimento="20120910" numeroDocumentoPrincipal="33014556081331" tipoPessoa="juridica">

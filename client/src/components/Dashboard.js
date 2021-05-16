@@ -1,49 +1,66 @@
 import React from 'react';
-import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import TablePagination from '@material-ui/core/TablePagination';
-import TableFooter from '@material-ui/core/TableFooter';
-import Row from '../components/Row';
 import Modal from '@material-ui/core/Modal';
 import History from './History';
 import { makeStyles } from '@material-ui/core/styles';
+import Chip from '@material-ui/core/Chip';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { DataGrid, useGridSlotComponentProps, ptBR } from '@material-ui/data-grid';
+import SearchIcon from '@material-ui/icons/Search';
+import IconButton from '@material-ui/core/IconButton';
 
+const theme = createMuiTheme(
+  ptBR,
+);
 class Dashboard extends React.Component {
-// (props) {
     constructor(props) {
         super(props);
         this.state = {
-            page: 0,
-            rowsPerPage: 5,
             open: false,
             history: []
         };
-        this.handleModalOpen = this.handleModalOpen.bind(this);
-        this.handleHistory = this.handleHistory.bind(this);
-    }
 
-    handleModalOpen = () => {
-        this.setState({open: !this.state.open});
-    };
+        this.columns = [
+            { field: 'name', headerName: 'Reclamante/Requerente', flex: 1,
+                renderCell: (params) => (
+                    <span>
+                        <IconButton aria-label="expand row" size="small" onClick={() => {
+                        this.handleModalOpen();
+                        this.handleHistory(params.rowIndex);
+                        }}>
+                            <SearchIcon/>
+                        </IconButton>
+                        {params.value}
+                    </span>
+                )
+            },
+            { field: 'claimed', headerName: 'Reclamadas', flex: 0.8  },
+            { field: 'lawyer', headerName: 'ADV', flex: 0.8 },
+            { field: 'court', headerName: 'Vara', width: 200 },
+            { field: 'id', headerName: 'Processo', width: 175 },
+            { field: 'tags', headerName: 'Tags', width: 150, overflow:'wrap',
+                renderCell: (params) => (
+                    params.value.map((tag) => (
+                        <Chip variant="outlined" color="secondary" size="small" label={tag} />
+                      ))
+                ),
+            } ];
+
+        this.handleHistory = this.handleHistory.bind(this);
+        this.handleModalOpen = this.handleModalOpen.bind(this);
+    }
 
     handleHistory = (value) => {
         console.log(value)
-        this.setState({history: value});
+        let history = this.props.rows[value];
+        this.setState({history: history});
         console.log(this.state)
     };
 
-    handleChangePage = (event, newPage) => {
-        this.setState({page: newPage});
-    };
-    
-    handleChangeRowsPerPage = (event) => {
-        this.setState({rowsPerPage: parseInt(event.target.value, 10)});
-        this.setState({page: 0});
+    handleModalOpen = () => {
+        this.setState({open: !this.state.open});
     };
 
     useStyles = makeStyles((theme) => ({
@@ -59,42 +76,13 @@ class Dashboard extends React.Component {
 
     render(){
         return (
-            <div>
-            <TableContainer component={Paper}>
-                <Table aria-label="collapsible table">
-                    <TableHead>
-                    <TableRow>
-                        <TableCell />
-                        <TableCell><b>Reclamante/Requerente</b></TableCell>
-                        <TableCell><b>Reclamadas</b></TableCell>
-                        <TableCell><b>ADV</b></TableCell>
-                        <TableCell><b>Vara</b></TableCell>
-                        <TableCell><b>Processo</b></TableCell>
-                    </TableRow>
-                    </TableHead>
-                    <TableBody>
-                    {(this.state.rowsPerPage > 0
-                        ? this.props.rows.slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
-                        : this.props.rows).map((row) => (
-                            <Row key={row.name} row={row} modalOpen={this.handleModalOpen} history={this.handleHistory}/>
-                    ))}
-                    </TableBody>
-                    <TableFooter>
-                        <TableRow>
-                            <TablePagination
-                                rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                                labelRowsPerPage={'Linhas por página:'}
-                                colSpan={6}
-                                count={this.props.rows.length}
-                                rowsPerPage={this.state.rowsPerPage}
-                                page={this.state.page}
-                                onChangePage={this.handleChangePage}
-                                onChangeRowsPerPage={this.handleChangeRowsPerPage}
-                            />
-                        </TableRow>
-                    </TableFooter>
-                </Table>
-            </TableContainer>
+            <div style={{ height: 400, width: '100%' }}>
+                
+            <ThemeProvider theme={theme}>
+                <DataGrid 
+                    rows={this.props.rows}
+                    columns={this.columns} />
+            </ThemeProvider>
             <Modal open={this.state.open}
               onClose={this.handleModalOpen}
               aria-labelledby="simple-modal-title"
@@ -105,7 +93,7 @@ class Dashboard extends React.Component {
                         <History row={this.state.history}/>
                     </TableBody>
                 </TableContainer>
-            </div>
+              </div>
             </Modal>
             </div>
         );
