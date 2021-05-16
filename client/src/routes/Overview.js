@@ -13,6 +13,7 @@ function createData(obj) {
   const basicData = obj.Envelope.Body.consultarProcessoResposta.processo.dadosBasicos;
   const processHistory = obj.Envelope.Body.consultarProcessoResposta.processo.movimento;
 
+  const requestingPart = basicData.polo.find(polo => polo.polo === 'PA').parte;
   const interestedPart = basicData.polo.find(polo => polo.polo === 'AT').parte;
 
   let history = []
@@ -25,7 +26,7 @@ function createData(obj) {
   });
 
   return {
-      name: obj.fileName,
+      name: requestingPart.pessoa.nome,
       date: basicData.dataAjuizamento,
       claimed: interestedPart.pessoa.nome,
       lawyer: interestedPart.advogado[0].nome,
