@@ -26,14 +26,6 @@ class Dashboard extends React.Component {
         this.handleModalOpen = this.handleModalOpen.bind(this);
         this.handleHistory = this.handleHistory.bind(this);
     }
-    // const [page, setPage] = React.useState(0);
-    // const [rowsPerPage, setRowsPerPage] = React.useState(5);
-    // const [open, setOpen] = React.useState(false);
-    // const [history, setHistory] = React.useState();
-    // const { rows } = props;
-    // if (this.props.rows.length > 0) {
-    //     debugger;
-    // }
 
     handleModalOpen = () => {
         this.setState({open: !this.state.open});
