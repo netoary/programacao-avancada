@@ -1,52 +1,68 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
 import Box from '@material-ui/core/Box';
-import Collapse from '@material-ui/core/Collapse';
-import IconButton from '@material-ui/core/IconButton';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import Timeline from '@material-ui/lab/Timeline';
+import TimelineItem from '@material-ui/lab/TimelineItem';
+import TimelineSeparator from '@material-ui/lab/TimelineSeparator';
+import TimelineConnector from '@material-ui/lab/TimelineConnector';
+import TimelineContent from '@material-ui/lab/TimelineContent';
+import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent';
+import TimelineDot from '@material-ui/lab/TimelineDot';
+import Paper from '@material-ui/core/Paper';
+
+const styles = theme => ({
+    paper: {
+        padding: '16px 16px',
+      },
+  });
 
 class History extends React.Component {
     constructor(props) {
         super(props);
-    }
+    } 
 
     render() {
+        const { classes } = this.props;
+
         return (
             <Box margin={1}>
                 <Typography variant="h6" gutterBottom component="div">
                 Detalhes
                 </Typography>
-                <Table size="small" aria-label="purchases">
-                <TableHead>
-                    <TableRow>
-                        <TableCell><b>Data</b></TableCell>
-                        <TableCell><b>Mensagem</b></TableCell>
-                        <TableCell><b>Documento</b></TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {this.props.row.history.map((historyRow) => (
-                    <TableRow key={historyRow.date}>
-                        <TableCell component="th" scope="this.row">
-                        {historyRow.dateTime}
-                        </TableCell>
-                        <TableCell>{historyRow.message}</TableCell>
-                        <TableCell>{historyRow.documentId}</TableCell>
-                    </TableRow>
-                    ))}
-                </TableBody>
-                </Table>
+
+                <Timeline align="alternate">
+                {this.props.row.history.map((historyRow) => (
+                    <TimelineItem>
+                        <TimelineOppositeContent>
+                            <Typography color="textSecondary">{historyRow.dateTime}</Typography>
+                        </TimelineOppositeContent>
+                        <TimelineSeparator>
+                            <TimelineDot />
+                            <TimelineConnector />
+                        </TimelineSeparator>
+                        <TimelineContent>
+                            <Paper elevation={3} className={classes.paper}>
+                                <Typography>{historyRow.message}</Typography>
+
+                            {(historyRow.documentId != null) ?
+                                
+                                <Typography variant="caption">
+                                    <br/>
+                                    Documento associado: {historyRow.documentId}
+                                </Typography>
+                                :
+                                null
+                                }
+                            </Paper>
+                        </TimelineContent>
+                    </TimelineItem>
+                ))}
+                </Timeline>
             </Box>
         )
     }
 }
 
-export default History;
+export default withStyles(styles, { withTheme: true })(History);
