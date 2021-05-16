@@ -13,11 +13,32 @@ app.use(cors())
 // Have Node serve the files for our built React app
 app.use(express.static(path.resolve(__dirname, '../client/build')));
 
-// Handle GET requests to /api route
-app.get("/api/getRows", (req, res) => {
-    const xml = fs.readFileSync('assets/teste.xml', 'utf-8')
-    var jsonObj = parser.parseXml(xml);
-    res.json(jsonObj);
+const loadedAssetsPath = 'assets/loaded/';
+const unLoadedAssetsPath = 'assets/unloaded/';
+
+app.get("/api/getRegistredProcess", (req, res) => {
+    
+    fs.readdir(loadedAssetsPath, function (err, files)
+    {
+        // handling error
+        if (err)
+        {
+            return console.log('Unable to scan directory: ' + err);
+        } 
+
+        let objs = [];
+        //listing all files using forEach
+        files.forEach(function (file) {
+            // Do whatever you want to do with the file
+            console.log(file);
+
+            const xml = fs.readFileSync(loadedAssetsPath + file, 'utf-8')
+            var jsonObj = parser.parseXml(xml);
+            jsonObj.fileName = file;
+            objs.push(jsonObj);
+        });
+        res.json(objs);
+    });
 });
 
 

@@ -25,7 +25,7 @@ function createData(obj) {
   });
 
   return {
-      name: 'Teste',
+      name: obj.fileName,
       date: basicData.dataAjuizamento,
       claimed: interestedPart.pessoa.nome,
       lawyer: interestedPart.advogado[0].nome,
@@ -45,12 +45,10 @@ class Overview extends React.Component {
   }
 
   async fetchRowsAsync() {
-    return axios.get('http://127.0.0.1:3001/api/getRows')
+    return axios.get('http://127.0.0.1:3001/api/getRegistredProcess')
       .then((response) => {
 
-        this.setState({rows: [
-          createData(response.data)
-        ]});
+        this.setState({rows: response.data.map(createData)});
     });
   }
 
