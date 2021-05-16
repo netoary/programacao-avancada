@@ -13,6 +13,7 @@ function createData(obj) {
   const basicData = obj.Envelope.Body.consultarProcessoResposta.processo.dadosBasicos;
   const processHistory = obj.Envelope.Body.consultarProcessoResposta.processo.movimento;
 
+  const requestingPart = basicData.polo.find(polo => polo.polo === 'PA').parte;
   const interestedPart = basicData.polo.find(polo => polo.polo === 'AT').parte;
 
   let history = []
@@ -25,7 +26,7 @@ function createData(obj) {
   });
 
   return {
-      name: 'Teste',
+      name: requestingPart.pessoa.nome,
       date: basicData.dataAjuizamento,
       claimed: interestedPart.pessoa.nome,
       lawyer: interestedPart.advogado[0].nome,
@@ -45,12 +46,10 @@ class Overview extends React.Component {
   }
 
   async fetchRowsAsync() {
-    return axios.get('http://127.0.0.1:3001/api/getRows')
+    return axios.get('http://127.0.0.1:3001/api/getRegistredProcess')
       .then((response) => {
 
-        this.setState({rows: [
-          createData(response.data)
-        ]});
+        this.setState({rows: response.data.map(createData)});
     });
   }
 
