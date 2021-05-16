@@ -4,7 +4,7 @@ In a law firm, one of the weekly workloads consists of monitoring lawsuits, chec
 
 A report (in  portuguese) with an in depth explanation of the application and the problem it aims to solve is found in `/relatorio_primeiro_entregavel.pdf`.
 
-## Run this app
+## Running this app
 
 ### As a node package
 
@@ -14,12 +14,12 @@ Go to the `/client/src directory`, then execute
 
 and the application will be available at `localhost:3000`.
 
-### Using the Docker container
+### Using the Docker production image
 After starting the `Docker daemon`, simply run
 
-`$ docker-compose up` 
+`$ docker-compose up application` 
 
-and the application will be available at `localhost:8080`.
+and the application will be available at `localhost:3001`.
 
 ## Typical usage
 
