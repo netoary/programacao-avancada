@@ -83,6 +83,7 @@ class Dashboard extends React.Component {
                         <TableRow>
                             <TablePagination
                                 rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                                labelRowsPerPage={'Linhas por página:'}
                                 colSpan={6}
                                 count={this.props.rows.length}
                                 rowsPerPage={this.state.rowsPerPage}
