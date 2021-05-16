@@ -114,7 +114,7 @@ class Dashboard extends React.Component {
                 </TableContainer>
             </div>
             </Modal>
-            </>
+            </div>
         );
     }
 }
