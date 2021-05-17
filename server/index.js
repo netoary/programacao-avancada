@@ -38,18 +38,18 @@ app.get("/api/registerProcess/:number", (req, res) => {
         res.sendStatus(404);
     }
     else {
-        if(registredObjs.findIndex(p => p.id == req.params.number) === -1)
-        {
+        if(registredObjs.findIndex(p => p.id == req.params.number) === -1) {
             registredObjs.push(obj);
+            res.json(obj);
         }
-        res.json(obj);
+        else {
+            res.sendStatus(204);
+        }
     }
 });
 
 app.post("/api/unregisterProcess/", (req, res) => {
     const id = registredObjs.findIndex(p => p.id == req.body.number)
-    console.log(id);
-    console.log(req.body.number);
 
     if (id === -1) {
         res.sendStatus(404);
