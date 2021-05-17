@@ -21,7 +21,7 @@ class RegisterProcess extends React.Component {
         super(props);
         this.state = {
             open: false,
-            processNumber: "",
+            processNumber: '',
             found: false,
             alertVisible: false,
             obj : null
@@ -74,6 +74,7 @@ class RegisterProcess extends React.Component {
                 {
                     this.handleResult(true);
                     this.setState({open: false});
+                    this.setState({processNumber: ''});
                     this.onReceivedProcess(response.data);
                 }
             });
