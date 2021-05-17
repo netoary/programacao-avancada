@@ -37,7 +37,7 @@ class Dashboard extends React.Component {
         this.state = {
             open: false,
             history: [],
-            rows: [],
+            rows: this.props.rows,
             removed: false,
             alertVisible: false,
         };
@@ -76,11 +76,13 @@ class Dashboard extends React.Component {
         this.handleHistory = this.handleHistory.bind(this);
         this.handleModalOpen = this.handleModalOpen.bind(this);
         this.handleCloseAlert = this.handleCloseAlert.bind(this);
+        this.handleRemoveResult = this.handleRemoveResult.bind(this);
+        this.onReceivedProcess = this.onReceivedProcess.bind();
     }
 
     handleHistory = (rowId) => {
         console.log(rowId)
-        let history = this.props.rows.concat(this.state.rows)[rowId];
+        let history = this.state.rows[rowId];
         this.setState({history: history});
         console.log(this.state)
     };
@@ -90,17 +92,14 @@ class Dashboard extends React.Component {
     };
 
     onReceivedProcess = (obj) => {
-        this.state.rows.push(obj);
-        this.forceUpdate();
+        this.setState( {rows: this.state.rows.concat(obj) });
     };
     
     async requestRemoveProcess(rowId) {
-        let process = this.props.rows.concat(this.state.rows)[rowId];
-        debugger;
+        let process = this.state.rows[rowId];
         return axios.post('http://127.0.0.1:3001/api/unregisterProcess/', 
             { number: process.id }, { validateStatus: false })
             .then((response) => {
-                debugger;
                 if (response.status === 404) {
                     this.handleRemoveResult(false, rowId);
                 }
@@ -114,10 +113,12 @@ class Dashboard extends React.Component {
     {
         this.setState({removed: success});
         this.setState({alertVisible: true});
-
         if (success)
         {
-            this.forceUpdate();
+            debugger;
+            const newRows = [...this.state.rows];
+            newRows.splice(rowId, 1);
+            this.setState( {rows: newRows });
         }
     }
     
@@ -138,7 +139,7 @@ class Dashboard extends React.Component {
             <ThemeProvider theme={theme}>
                 <DataGrid 
                     getRowClassName={classes.rows}
-                    rows={this.props.rows.concat(this.state.rows)}
+                    rows={this.state.rows}
                     columns={this.columns} />
             </ThemeProvider>
             <Modal open={this.state.open}

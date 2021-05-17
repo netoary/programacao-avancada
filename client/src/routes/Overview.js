@@ -6,15 +6,17 @@ class Overview extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      rows: []
+      rows: [],
+      loaded: false
     }
+    this.fetchRowsAsync = this.fetchRowsAsync.bind(this);
   }
 
   async fetchRowsAsync() {
     return axios.get('http://127.0.0.1:3001/api/getRegistredProcess')
       .then((response) => {
-        debugger;
-        this.setState({rows: response.data});
+        this.setState({rows: response.data });
+        this.setState({loaded: true });
     });
   }
 
@@ -22,7 +24,7 @@ class Overview extends React.Component {
     return (
         <div>
             <h1>Overview</h1>
-            <Dashboard rows={this.state.rows}/>
+            {this.state.loaded ? <Dashboard rows={this.state.rows}/> : null}
         </div>
     );
   }
