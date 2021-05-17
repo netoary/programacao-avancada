@@ -42,7 +42,11 @@ class RegisterProcess extends React.Component {
             this.setState({open: !this.state.open});
             return;
         }
-        this.fetchProcessAsync(this.state.processNumber);
+
+        if (this.state.processNumber.length > 0)
+        {
+            this.fetchProcessAsync(this.state.processNumber);
+        }
     };
 
     handleChange(e)
