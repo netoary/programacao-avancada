@@ -1,6 +1,7 @@
 FROM node:14
 
-WORKDIR /usr/src
+RUN mkdir /app
+WORKDIR /app
 
 COPY ./server/package*.json ./server/
 COPY ./client/package*.json ./client/
@@ -8,8 +9,6 @@ COPY ./client/package*.json ./client/
 RUN npm install --prefix ./client
 RUN npm install --prefix ./server
 
-ADD . .
-
 EXPOSE 3001
 
-CMD npm run start --prefix ./server
+ENTRYPOINT ["npm", "run", "start", "--prefix", "./server"]
