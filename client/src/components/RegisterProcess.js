@@ -5,6 +5,8 @@ import IconButton from '@material-ui/core/IconButton';
 import axios from 'axios';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
 
 const styles = theme => ({
         tagCell: {
@@ -82,8 +84,8 @@ class RegisterProcess extends React.Component {
 
     render(){
         return (
-            <div>
-                {this.state.open ? <input type="text" onChange={ this.handleChange }/> : null }
+            <Grid container justify="flex-end" alignItems="center">
+                {this.state.open ? <TextField type="text" size="small" variant="outlined" placeholder="Número do processo" onChange={ this.handleChange }/> : null }
                 <IconButton aria-label="expand row" size="large" onClick={this.handleAddButtonClick}>
                     <AddIcon />
                 </IconButton>
@@ -99,7 +101,7 @@ class RegisterProcess extends React.Component {
                         Processo não encontrado
                     </Alert>
                 </Snackbar>
-            </div>
+            </Grid>
         );
     }
 }
