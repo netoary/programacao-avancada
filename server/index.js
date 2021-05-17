@@ -7,7 +7,8 @@ const PORT = process.env.PORT || 3001;
 
 var cors = require('cors')
 const app = express();
-
+app.use(express.urlencoded());
+app.use(express.json());
 app.use(cors())
 
 // Have Node serve the files for our built React app
@@ -45,8 +46,11 @@ app.get("/api/registerProcess/:number", (req, res) => {
     }
 });
 
-app.get("/api/removeProcess/:number", (req, res) => {
-    const id = registredObjs.indexOf(p => p.id == req.params.number)
+app.post("/api/unregisterProcess/", (req, res) => {
+    const id = registredObjs.findIndex(p => p.id == req.body.number)
+    console.log(id);
+    console.log(req.body.number);
+
     if (id === -1) {
         res.sendStatus(404);
     }
