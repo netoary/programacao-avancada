@@ -8,16 +8,27 @@ import { DataGrid, ptBR } from '@material-ui/data-grid';
 import SearchIcon from '@material-ui/icons/Search';
 import IconButton from '@material-ui/core/IconButton';
 import RegisterProcess from './RegisterProcess';
+import DeleteIcon from '@material-ui/icons/Delete';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+import axios from 'axios';
 
 const theme = createMuiTheme(
   ptBR,
 );
 
 const styles = theme => ({
-        tagCell: {
+    tagCell: {
         flexWrap: 'wrap',
+    },
+    rows: {
+        display: 'flex'
     }
   });
+
+  function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
 
 class Dashboard extends React.Component {
     constructor(props) {
@@ -27,22 +38,20 @@ class Dashboard extends React.Component {
             open: false,
             history: [],
             rows: [],
+            removed: false,
+            alertVisible: false,
         };
 
         this.columns = [
-            { field: 'name', headerName: 'Reclamante/Requerente', flex: 1,
-                renderCell: (params) => (
-                    <span>
-                        <IconButton aria-label="expand row" size="small" onClick={() => {
-                        this.handleModalOpen();
-                        this.handleHistory(params.rowIndex);
-                        }}>
-                            <SearchIcon/>
-                        </IconButton>
-                        {params.value}
-                    </span>
-                )
-            },
+            { field: 'search', headerName: '', width: 50, renderCell: (params) => (
+                <IconButton aria-label="expand row" size="small" onClick={() => {
+                this.handleModalOpen();
+                this.handleHistory(params.rowIndex);
+                }}>
+                    <SearchIcon/>
+                </IconButton>
+            )},
+            { field: 'name', headerName: 'Reclamante/Requerente', flex: 1 },
             { field: 'claimed', headerName: 'Reclamadas', flex: 0.8  },
             { field: 'lawyer', headerName: 'ADV', flex: 0.8 },
             { field: 'court', headerName: 'Vara', width: 200 },
@@ -54,15 +63,24 @@ class Dashboard extends React.Component {
                         <Chip variant="outlined" color="secondary" size="small" label={tag} />
                       ))
                 ),
-            } ];
+            },
+            { field: 'remove', headerName: '', width: 50, renderCell: (params) => (
+                <IconButton aria-label="expand row" size="small" onClick={() => {
+                this.requestRemoveProcess(params.rowIndex);
+                }}>
+                    <DeleteIcon />
+                </IconButton>
+            )}
+        ];
 
         this.handleHistory = this.handleHistory.bind(this);
         this.handleModalOpen = this.handleModalOpen.bind(this);
+        this.handleCloseAlert = this.handleCloseAlert.bind(this);
     }
 
-    handleHistory = (value) => {
-        console.log(value)
-        let history = this.props.rows.concat(this.state.rows)[value];
+    handleHistory = (rowId) => {
+        console.log(rowId)
+        let history = this.props.rows.concat(this.state.rows)[rowId];
         this.setState({history: history});
         console.log(this.state)
     };
@@ -75,13 +93,51 @@ class Dashboard extends React.Component {
         this.state.rows.push(obj);
         this.forceUpdate();
     };
+    
+    async requestRemoveProcess(rowId) {
+        let process = this.props.rows.concat(this.state.rows)[rowId];
+        debugger;
+        return axios.post('http://127.0.0.1:3001/api/unregisterProcess/', 
+            { number: process.id }, { validateStatus: false })
+            .then((response) => {
+                debugger;
+                if (response.status === 404) {
+                    this.handleRemoveResult(false, rowId);
+                }
+                else {
+                    this.handleRemoveResult(true, rowId);
+                }
+            });
+    }
+
+    handleRemoveResult(success, rowId)
+    {
+        this.setState({removed: success});
+        this.setState({alertVisible: true});
+
+        if (success)
+        {
+            this.forceUpdate();
+        }
+    }
+    
+    handleCloseAlert(event, reason)
+    {
+        if (reason === 'clickaway')
+        {
+            return;
+        }
+        this.setState({alertVisible: false});
+    };
 
     render(){
+        const { classes } = this.props;
         return (
             <div style={{ height: 400, width: '100%' }}>
             <RegisterProcess onReceivedProcess={this.onReceivedProcess}/>
             <ThemeProvider theme={theme}>
                 <DataGrid 
+                    getRowClassName={classes.rows}
                     rows={this.props.rows.concat(this.state.rows)}
                     columns={this.columns} />
             </ThemeProvider>
@@ -93,6 +149,18 @@ class Dashboard extends React.Component {
                 <History row={this.state.history}/>
               </div>
             </Modal>
+            
+            <Snackbar open={this.state.alertVisible && this.state.removed} autoHideDuration={3000} onClose={this.handleCloseAlert}>
+                <Alert onClose={this.handleCloseAlert} severity="success">
+                    Processo removido com sucesso
+                </Alert>
+            </Snackbar>
+            
+            <Snackbar open={this.state.alertVisible && !this.state.removed} autoHideDuration={3000} onClose={this.handleCloseAlert}>
+                <Alert onClose={this.handleCloseAlert} severity="error">
+                    Processo não encontrado
+                </Alert>
+            </Snackbar>
             </div>
         );
     }
