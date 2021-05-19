@@ -29,7 +29,7 @@ and the application will be available at `localhost:3001`.
 
 ## Typical usage
 
-The `/server/assets/assets` contains information about some lawsuit examples. Their numbers (identification) are as follow:
+The `/server/assets/` contains information about some lawsuit examples. Their numbers (identification) are as follow:
 
 * Americanas - 00390682620158110041
 * Armando Caprigolio - 00078625720168110041
