@@ -5,6 +5,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 
 const Overview = lazy(() => import("./routes/Overview"));
+const SignIn = lazy(() => import("./routes/SignIn"));
 
 function App() {
     return (
@@ -14,7 +15,10 @@ function App() {
                 <Container maxWidth="lg">
                     <Suspense fallback={<div>Carregando...</div>}>
                         <Switch>
-                            <Route path="/">
+                            <Route exact path="/">
+                                <SignIn />
+                            </Route>
+                            <Route path="/overview">
                                 <Overview test="" />
                             </Route>
                         </Switch>
