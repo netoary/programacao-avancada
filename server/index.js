@@ -3,7 +3,12 @@ const path = require('path');
 const fs = require('fs');
 const parser = require('./xmlParser');
 
+const session = require('express-session')
+const grant = require('grant-express')
+
 const PORT = process.env.PORT || 3001;
+
+require('dotenv').config()
 
 var cors = require('cors')
 const app = express();
@@ -17,6 +22,11 @@ app.use(express.static(path.resolve(__dirname, '../client/build')));
 const assetsPath = 'assets/';
 let objs = [];
 let registredObjs = [];
+
+app.use(session({secret: process.env.OAUTH_SECRET}))
+app.use(grant(require('./config.json')))
+app.use('/redirect', (req, res) => res.end(JSON.stringify(req.query, null, 2)))
+
 
 fs.readdir(assetsPath, function (err, files) {
     // handling error
