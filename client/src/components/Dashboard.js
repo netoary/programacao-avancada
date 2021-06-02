@@ -4,7 +4,7 @@ import History from './History';
 import { withStyles } from '@material-ui/styles';
 import Chip from '@material-ui/core/Chip';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import { DataGrid, ptBR } from '@material-ui/data-grid';
+import { DataGrid, ptBR, GridToolbarContainer, GridToolbarExport } from '@material-ui/data-grid';
 import SearchIcon from '@material-ui/icons/Search';
 import IconButton from '@material-ui/core/IconButton';
 import RegisterProcess from './RegisterProcess';
@@ -26,9 +26,17 @@ const styles = theme => ({
     }
   });
 
-  function Alert(props) {
+function CustomToolBar() {
+    return (
+        <GridToolbarContainer>
+            <GridToolbarExport />
+        </GridToolbarContainer>
+    );
+}
+
+function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
-  }
+}
 
 class Dashboard extends React.Component {
     constructor(props) {
@@ -133,6 +141,7 @@ class Dashboard extends React.Component {
 
     render(){
         const { classes } = this.props;
+
         return (
             <div style={{ height: 400, width: '100%' }}>
             <RegisterProcess onReceivedProcess={this.onReceivedProcess}/>
@@ -140,7 +149,11 @@ class Dashboard extends React.Component {
                 <DataGrid 
                     getRowClassName={classes.rows}
                     rows={this.state.rows}
-                    columns={this.columns} />
+                    columns={this.columns}
+                    components={{
+                        Toolbar: CustomToolBar,
+                    }}
+                />
             </ThemeProvider>
             <Modal open={this.state.open}
               onClose={this.handleModalOpen}
