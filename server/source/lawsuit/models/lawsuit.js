@@ -1,4 +1,4 @@
-LawsuitHistory = require('./LawsuitHistory');
+LawsuitHistory = require('./lawsuitHistory');
 
 const mongoose = require('mongoose');
 
