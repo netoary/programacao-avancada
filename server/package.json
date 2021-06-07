@@ -4,6 +4,7 @@
   "description": "## How to contribute?",
   "main": "index.js",
   "scripts": {
+    "dev": "nodemon --watch server server/index.js",
     "start": "npm run build && node index.js",
     "build": "npm run build --prefix ../client"
   },
@@ -22,6 +23,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "fast-xml-parser": "^3.19.0",
-    "he": "^1.2.0"
+    "he": "^1.2.0",
+    "nodemon": "^2.0.7"
   }
 }
