@@ -25,7 +25,7 @@ let registredObjs = [];
 
 app.use(session({secret: process.env.OAUTH_SECRET}))
 app.use(grant(require('./config.json')))
-app.use('/redirect', (req, res) => res.end(JSON.stringify(req.query, null, 2)))
+app.use('/redirect', (req, res) => res.end(JSON.stringify(req.session, null, 2)))
 
 
 fs.readdir(assetsPath, function (err, files) {
