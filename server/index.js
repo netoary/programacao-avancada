@@ -10,6 +10,8 @@ const PORT = process.env.PORT || 3001;
 
 require('dotenv').config()
 
+var qs = require('qs');
+
 var cors = require('cors')
 const app = express();
 app.use(express.urlencoded());
@@ -25,7 +27,8 @@ let registredObjs = [];
 
 app.use(session({secret: process.env.OAUTH_SECRET}))
 app.use(grant(require('./config.json')))
-app.use('/redirect', (req, res) => res.end(JSON.stringify(req.session, null, 2)))
+// app.use('/redirect', (req, res) => res.end(JSON.stringify(req.session, null, 2)))
+app.use('/redirect', (req, res) => res.redirect("http://localhost:3001/overview"+ "/?" + qs.stringify(req.session)))
 
 
 fs.readdir(assetsPath, function (err, files) {

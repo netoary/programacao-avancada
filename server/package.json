@@ -25,6 +25,7 @@
     "express-session": "^1.17.2",
     "fast-xml-parser": "^3.19.0",
     "grant-express": "^5.4.8",
-    "he": "^1.2.0"
+    "he": "^1.2.0",
+    "qs": "^6.10.1"
   }
 }
