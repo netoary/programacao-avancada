@@ -4,6 +4,9 @@ const fs = require('fs');
 const parser = require('./source/lawsuit/services/xmlParser');
 const mongoose = require('mongoose');
 
+const session = require('express-session')
+const grant = require('grant-express')
+
 const PORT = process.env.PORT || 3001;
 
 mongoose
@@ -21,6 +24,9 @@ mongoose
         console.log(err)
         process.exit(1)
     })
+require('dotenv').config()
+
+var qs = require('qs');
 
 var cors = require('cors')
 const app = express();
@@ -34,6 +40,12 @@ app.use(express.static(path.resolve(__dirname, '../client/build')));
 const assetsPath = 'assets/';
 let objs = [];
 let registredObjs = [];
+
+app.use(session({secret: process.env.OAUTH_SECRET}))
+app.use(grant(require('./config.json')))
+// app.use('/redirect', (req, res) => res.end(JSON.stringify(req.session, null, 2)))
+app.use('/redirect', (req, res) => res.redirect("http://localhost:3001/overview"+ "/?" + qs.stringify(req.session)))
+
 
 fs.readdir(assetsPath, function (err, files) {
     // handling error
