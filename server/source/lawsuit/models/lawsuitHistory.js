@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-var LawsuitHistorySchema = new mongoose.Schema({
+const LawsuitHistorySchema = new mongoose.Schema({
   dateTime: Date,
   message: String,
   documentId: String,
