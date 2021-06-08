@@ -49,56 +49,16 @@ export default function SignIn() {
           Sign in
         </Typography>
         <form className={classes.form} noValidate>
-          {/* <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-            onChange={ev => setEmail(ev.target.value)}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            onChange={ev => setPassword(ev.target.value)}
-          /> */}
-          {/* <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          /> */}
           <Link
             type="submit"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
-            href="/connect/google"
+            href="//localhost:3001/connect/google"
           >
             Sign in with Google
           </Link>
-          {/* <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
-             <Grid item>
-              <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid> */}
         </form>
       </div>
     </Container>
