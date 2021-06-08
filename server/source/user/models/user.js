@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-var UserSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
   googleUserId: Number,
 });
 
