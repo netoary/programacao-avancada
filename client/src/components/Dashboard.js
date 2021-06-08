@@ -64,6 +64,7 @@ class Dashboard extends React.Component {
             { field: 'lawyer', headerName: 'ADV', flex: 0.8 },
             { field: 'court', headerName: 'Vara', width: 200 },
             { field: 'id', headerName: 'Processo', width: 175 },
+            { field: 'movement', headerName: 'Movimentação', width: 150 },
             { field: 'tags', headerName: 'Tags', width: 150, cellClassName:classes.tagCell,
                 renderCell: (params) => (
                     params.value == null ? null : 
