@@ -1,13 +1,29 @@
 const express = require("express");
 const path = require('path');
 const fs = require('fs');
-const parser = require('./xmlParser');
+const parser = require('./source/lawsuit/services/xmlParser');
+const mongoose = require('mongoose');
 
 const session = require('express-session')
 const grant = require('grant-express')
 
 const PORT = process.env.PORT || 3001;
 
+mongoose
+    .connect('mongodb://db/3002', {
+        useNewUrlParser: true,
+        useCreateIndex: true,
+        useFindAndModify: false,
+        useUnifiedTopology: true,
+    })
+    .then(() => {
+        console.log("Database is connected.")
+    })
+    .catch((err) => {
+        console.log("Database connection was unsuccessful.")
+        console.log(err)
+        process.exit(1)
+    })
 require('dotenv').config()
 
 var qs = require('qs');
