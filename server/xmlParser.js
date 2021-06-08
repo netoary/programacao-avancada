@@ -45,6 +45,7 @@ function createData(obj) {
         date: basicData.dataAjuizamento,
         claimed: interestedPart.pessoa.nome,
         lawyer: interestedPart.advogado[0].nome,
+        movement: history.length > 0 ? history[0].message : ' ',
         court: basicData.orgaoJulgador.nomeOrgao,
         id: basicData.numero,
         value: basicData.valorCausa,
