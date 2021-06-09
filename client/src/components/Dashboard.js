@@ -53,8 +53,8 @@ class Dashboard extends React.Component {
         this.columns = [
             { field: 'search', headerName: '', width: 50, renderCell: (params) => (
                 <IconButton aria-label="expand row" size="small" onClick={() => {
+                    this.handleHistory(params.row);
                 this.handleModalOpen();
-                this.handleHistory(params.rowIndex);
                 }}>
                     <SearchIcon/>
                 </IconButton>
@@ -63,7 +63,7 @@ class Dashboard extends React.Component {
             { field: 'claimed', headerName: 'Reclamadas', flex: 0.8  },
             { field: 'lawyer', headerName: 'ADV', flex: 0.8 },
             { field: 'court', headerName: 'Vara', width: 200 },
-            { field: 'id', headerName: 'Processo', width: 175 },
+            { field: '_id', headerName: 'Processo', width: 175 },
             { field: 'movement', headerName: 'Movimentação', width: 150 },
             { field: 'tags', headerName: 'Tags', width: 150, cellClassName:classes.tagCell,
                 renderCell: (params) => (
@@ -75,7 +75,7 @@ class Dashboard extends React.Component {
             },
             { field: 'remove', headerName: '', width: 50, renderCell: (params) => (
                 <IconButton aria-label="expand row" size="small" onClick={() => {
-                this.requestRemoveProcess(params.rowIndex);
+                this.requestRemoveProcess(params.id);
                 }}>
                     <DeleteIcon />
                 </IconButton>
@@ -89,10 +89,9 @@ class Dashboard extends React.Component {
         this.onReceivedProcess = this.onReceivedProcess.bind();
     }
 
-    handleHistory = (rowId) => {
-        console.log(rowId)
-        let history = this.state.rows[rowId];
-        this.setState({history: history});
+    handleHistory = (lawsuit) => {
+        debugger;
+        this.setState({history: lawsuit.history});
         console.log(this.state)
     };
 
@@ -101,19 +100,24 @@ class Dashboard extends React.Component {
     };
 
     onReceivedProcess = (obj) => {
-        this.setState( {rows: this.state.rows.concat(obj) });
+        const newRow = {
+            ...obj,
+            id: obj._id
+        };
+        this.setState( {rows: this.state.rows.concat(newRow) });
     };
     
-    async requestRemoveProcess(rowId) {
-        let process = this.state.rows[rowId];
-        return axios.post('http://127.0.0.1:3001/api/unregisterProcess/', 
-            { number: process.id }, { validateStatus: false })
+    async requestRemoveProcess(lawsuitId) {
+        return axios.post('//localhost:3001/api/unregisterProcess/', 
+            { number: lawsuitId }, { validateStatus: false, 
+                credentials: 'same-origin',
+                withCredentials: true })
             .then((response) => {
                 if (response.status === 404) {
-                    this.handleRemoveResult(false, rowId);
+                    this.handleRemoveResult(false, lawsuitId);
                 }
                 else {
-                    this.handleRemoveResult(true, rowId);
+                    this.handleRemoveResult(true, lawsuitId);
                 }
             });
     }
@@ -124,9 +128,9 @@ class Dashboard extends React.Component {
         this.setState({alertVisible: true});
         if (success)
         {
-            debugger;
-            const newRows = [...this.state.rows];
-            newRows.splice(rowId, 1);
+            const newRows = this.state.rows.filter(
+                row => (row.id !== rowId)
+            );
             this.setState( {rows: newRows });
         }
     }

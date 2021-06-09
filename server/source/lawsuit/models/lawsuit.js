@@ -3,10 +3,7 @@ LawsuitHistory = require('./lawsuitHistory');
 const mongoose = require('mongoose');
 
 const LawsuitSchema = new mongoose.Schema({
-  id: {
-    type: String,
-    required: true,
-  },
+  _id: String,
   name: String,
   date: String,
   claimed: String,
@@ -14,7 +11,7 @@ const LawsuitSchema = new mongoose.Schema({
   court: String,
   value: String,
   history: [LawsuitHistory.schema],
-  tags: String,
+  tags: [String],
 });
 
 module.exports = mongoose.model('Lawsuit', LawsuitSchema);

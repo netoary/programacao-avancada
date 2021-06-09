@@ -70,7 +70,12 @@ class RegisterProcess extends React.Component {
     };
 
     async fetchProcessAsync(processNumber) {
-        return axios.get('http://127.0.0.1:3001/api/registerProcess/' + processNumber, { validateStatus: false })
+        return axios.post('//localhost:3001/api/registerProcess/', { number: processNumber },
+            {
+                validateStatus: false,
+                credentials: 'same-origin',
+                withCredentials: true,
+            })
             .then((response) => {
                 if (response.status === 404) {
                     this.handleResult(false);

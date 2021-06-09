@@ -1,14 +1,42 @@
+require("dotenv").config({path: "./google.env"});
+
 const express = require("express");
 const path = require('path');
 const fs = require('fs');
 const parser = require('./source/lawsuit/services/xmlParser');
 const mongoose = require('mongoose');
-
-const session = require('express-session')
-const grant = require('grant-express')
+const session = require("express-session");
+const passport = require("passport");
+const passportLocalMongoose = require("passport-local-mongoose");
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const findOrCreate = require("mongoose-findorcreate");
+const { ensureAuth } = require('./auth');
+const Lawsuit = require("./source/lawsuit/models/lawsuit");
 
 const PORT = process.env.PORT || 3001;
 
+// Allow CORS
+var cors = require('cors')
+const app = express();
+
+app.use(express.urlencoded());
+app.use(express.json());
+app.use(cors({
+    credentials: true,
+    origin: "http://localhost:3000"
+}))
+
+// Authentication
+app.use(session({
+    secret: process.env.SESSION_SEECRET || "Our little secret.",
+    resave: false,
+    saveUninitialized: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Database connection
 mongoose
     .connect('mongodb://db/3002', {
         useNewUrlParser: true,
@@ -24,28 +52,67 @@ mongoose
         console.log(err)
         process.exit(1)
     })
-require('dotenv').config()
 
-var qs = require('qs');
+// User schema
+const userSchema = new mongoose.Schema ({
+    name: String,
+    googleId: String,
+    username: String,
+    lawsuits: [
+        { 
+            type: String,
+            ref:'Lawsuit'
+        }
+    ]
+});
 
-var cors = require('cors')
-const app = express();
-app.use(express.urlencoded());
-app.use(express.json());
-app.use(cors())
+userSchema.plugin(passportLocalMongoose);
+userSchema.plugin(findOrCreate);
+
+const User = new mongoose.model("User", userSchema);
+
+passport.use(User.createStrategy());passport.serializeUser(function(user, done) {
+    done(null, user.id);
+  });passport.deserializeUser(function(id, done) {
+    User.findById(id, function(err, user) {
+      done(err, user);
+    });
+  });passport.use(new GoogleStrategy({
+      clientID: process.env.CLIENT_ID,
+      clientSecret: process.env.CLIENT_SECRET,
+      callbackURL: "/auth/google/callback",
+      userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
+    },
+    function(accessToken, refreshToken, profile, cb) {
+      User.findOrCreate({ googleId: profile.id, username:profile.id, name: profile.displayName }, function (err, user) {
+        user.accessToken = accessToken;
+        return cb(err, user);
+      });
+    }
+));
+
+
+app.get("/auth/google",
+  passport.authenticate("google", { scope: ["profile"] })
+);
+
+app.get("/auth/google/callback",
+  passport.authenticate("google", { failureRedirect: "http://localhost:3000", session: true }),
+  function(req, res) {
+    res.redirect("http://localhost:3000");
+    //res.json(req.user);
+  }
+);
+
+app.get("/logout", function(req, res){
+    res.redirect("http://localhost:3000/");
+});
 
 // Have Node serve the files for our built React app
-app.use(express.static(path.resolve(__dirname, '../client/build')));
+app.use(express.static(path.resolve(__dirname, '//localhost:3000/')));
 
 const assetsPath = 'assets/';
 let objs = [];
-let registredObjs = [];
-
-app.use(session({secret: process.env.OAUTH_SECRET}))
-app.use(grant(require('./config.json')))
-// app.use('/redirect', (req, res) => res.end(JSON.stringify(req.session, null, 2)))
-app.use('/redirect', (req, res) => res.redirect("http://localhost:3001/overview"+ "/?" + qs.stringify(req.session)))
-
 
 fs.readdir(assetsPath, function (err, files) {
     // handling error
@@ -58,39 +125,43 @@ fs.readdir(assetsPath, function (err, files) {
         const xml = fs.readFileSync(assetsPath + file, 'utf-8')
         var jsonObj = parser.parseXml(xml);
         objs.push(jsonObj);
+        console.log(jsonObj._id);
     });
 });
 
-app.get("/api/registerProcess/:number", (req, res) => {
-    const obj = objs.find(p => p.id == req.params.number)
-    if (obj == null) {
+
+app.post("/api/registerProcess", ensureAuth, async(req, res) => {
+    id = parseInt(req.body.number, 10).toString();
+    console.log(id);
+    let lawsuit = await Lawsuit.findById(id).exec();
+    if (lawsuit == null) {
+        const obj = objs.find(p => p._id == id)
+        if (obj != null) {
+            lawsuit = await Lawsuit.create(obj).then(o => { return o });
+        }
+    }
+
+    if (lawsuit == null) {
         res.sendStatus(404);
     }
+
     else {
-        if(registredObjs.findIndex(p => p.id == req.params.number) === -1) {
-            registredObjs.push(obj);
-            res.json(obj);
-        }
-        else {
-            res.sendStatus(204);
-        }
+        req.user.lawsuits.addToSet(lawsuit._id);
+        req.user.save();
+        console.log(req.user);
+        res.json(lawsuit);
     }
 });
 
 app.post("/api/unregisterProcess/", (req, res) => {
-    const id = registredObjs.findIndex(p => p.id == req.body.number)
-
-    if (id === -1) {
-        res.sendStatus(404);
-    }
-    else {
-        registredObjs.splice(id, 1);
-        res.sendStatus(200);
-    }
+    req.user.lawsuits.pull({ _id: req.body.number });
+    req.user.save();
+    res.sendStatus(200);
 });
 
-app.get("/api/getRegistredProcess", (req, res) => {
-    res.json(registredObjs);
+app.get("/api/currentUser", ensureAuth, async(req, res) => {
+    user = await User.findById(req.user._id).populate("lawsuits");
+    res.send(user);
 });
 
 // All other GET requests not handled before will return our React app
