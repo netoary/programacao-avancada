@@ -8,6 +8,7 @@ services:
             - "3000:3000"
         container_name: dev-client
         volumes:
+            - /usr/src/app/node_modules
             - ./client:/usr/src/app
 
     application:
