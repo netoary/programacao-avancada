@@ -33,7 +33,7 @@ class History extends React.Component {
                 </Typography>
 
                 <Timeline align="alternate">
-                {this.props.row.history.map((historyRow) => (
+                {this.props.row.map((historyRow) => (
                     <TimelineItem>
                         <TimelineOppositeContent>
                             <Typography color="textSecondary">{historyRow.dateTime}</Typography>

@@ -1,5 +1,7 @@
 const parser = require('fast-xml-parser');
 const he = require('he');
+const Lawsuit = require('../models/lawsuit');
+const LawsuitHistory = require('../models/lawsuitHistory').model;
 
 var options = {
     attributeNamePrefix : "",
@@ -9,7 +11,7 @@ var options = {
     allowBooleanAttributes : false,
     parseNodeValue : true,
     parseAttributeValue : true,
-    trimValues: true,
+    trimValues: false,
     cdataPositionChar: "\\c",
     parseTrueNumberOnly: false,
     arrayMode: false,
@@ -33,25 +35,24 @@ function createData(obj) {
     
     let history = []
     processHistory.sort((a, b) => b.dataHora - a.dataHora).forEach(movement => {
-      history.push({
+      history.push(new LawsuitHistory({
         dateTime: parseDateTime(movement.dataHora.toString()).toLocaleString(),
         message: movement.movimentoNacional.complemento,
         documentId: movement.idDocumentoVinculado,
-      });
+      }));
     });
-    
-    return {
+
+    return new Lawsuit({
+        _id: basicData.numero.toString(),
         name: requestingPart.pessoa.nome,
         date: basicData.dataAjuizamento,
         claimed: interestedPart.pessoa.nome,
         lawyer: interestedPart.advogado[0].nome,
-        movement: history.length > 0 ? history[0].message : ' ',
         court: basicData.orgaoJulgador.nomeOrgao,
-        id: basicData.numero,
         value: basicData.valorCausa,
         history: history,
         tags: basicData.tags,
-    };
+    });
   }
   
 
