@@ -55,7 +55,7 @@ export default function SignIn() {
             variant="contained"
             color="primary"
             className={classes.submit}
-            href="//localhost:3001/connect/google"
+            href="//localhost:3001/auth/google"
           >
             Sign in with Google
           </Link>
