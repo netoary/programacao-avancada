@@ -13,7 +13,10 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
-import { purple } from '@material-ui/core/colors';
+import { green } from '@material-ui/core/colors';
+import GoogleButton from 'react-google-button';
+import background from "./../assets/bg.jpeg"
+import { ReactComponent as Logo } from './../assets/logo_pa.svg';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -21,10 +24,16 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     minHeight: '100vh',
+    backgroundImage: `url(${background})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    // margin: 0,
+    backgroundRepeat: 'no-repeat',
+    opacity: 1,
   },
   image: {
-    backgroundColor:
-      theme.palette.type === 'light' ? theme.palette.grey[600] : theme.palette.grey[900],
+    // backgroundColor:
+    //   theme.palette.type === 'light' ? theme.palette.grey[600] : theme.palette.grey[900],
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     display: 'flex',
@@ -35,11 +44,20 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(8, 4),
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
+    // alignItems: 'center',
+    // shadowColor: '#000',
+    // shadowOffset: { width: 0, height: 1 },
+    // shadowOpacity: 0.8,
+    // shadowRadius: 2,  
+    // elevation: 5
+
   },
   avatar: {
     margin: theme.spacing(10, 0, 1),
     backgroundColor: theme.palette.secondary.main,
+  },
+  logo: {
+    margin: theme.spacing(5, 0, 3),
   },
   form: {
     width: '100%',
@@ -48,57 +66,63 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(10),
   },
+  google: {
+    margin: theme.spacing.mx = "auto",
+  },
   title: {
     margin: theme.spacing.mx = "auto",
-    color: theme.palette.grey[100],
+    color: theme.palette.grey[900],
   },
   main: {
     height: '77vh',
   },
   footertext: {
-    color: theme.palette.grey[100],
+    color: theme.palette.grey[900],
   },
   footer: {
-    padding: theme.spacing(3, 2),
+    padding: theme.spacing(5, 3),
     //marginTop: 'auto',
     backgroundColor:
-      theme.palette.type === 'light' ? purple[700] : theme.palette.grey[900],
+      theme.palette.type === 'light' ? green[300] : theme.palette.grey[900],
   },
 }));
 
 export default function SignInSide() {
   const classes = useStyles();
 
+  const handleClick = () => {
+      window.location = "//localhost:3001/auth/google";
+  }
+
   return (
-    <div className={classes.root}>
-    <Grid container component="main" className={classes.main}>
+    <div className={classes.root} >
+    <Grid container component="main" className={classes.main} >
       <CssBaseline />
-      <Grid item xs={false} sm={4} md={7} className={classes.image}>
-          <Typography component="h1" variant="h1" className={classes.title}>
+      <Grid item xs={false} sm={4} md={7} className={classes.image} >
+          {/* <Typography component="h1" variant="h1" className={classes.title} >
             Processa Processo
-          </Typography>
+          </Typography> */}
       </Grid>
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Link
-            type="submit"
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            href="//localhost:3001/auth/google"
-          >
-            Sign in with Google
-          </Link>
+        <div className={classes.logo}>
+            <Logo />
+            <Typography component="h1" variant="h1" className={classes.title} >
+            Processa Processo
+          </Typography>
+            </div>
+            <div className={classes.google}>
+          <GoogleButton id="loginBttn "
+            onClick={() => {handleClick()}}
+          />
+            </div>   
         </div>
       </Grid>
       </Grid>
       <footer className={classes.footer}>
-        <Container maxWidth="sm">
+        <Container maxWidth="md">
           <Typography variant="body1" className={classes.footertext}>
-              O Processa Processo é para advogados, estagiários e demais operadores do Direito,
+              O Processa Processo é feito para advogados, estagiários e demais operadores do Direito,
                 cuja carteira de processos para acompanhamento seja muito grande. <br />
               O PP automatiza as consultas da movimentação (ou “do andamento”) dos processos. 
                <br /> <br /> 
