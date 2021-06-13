@@ -15,9 +15,8 @@ import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
 import { green } from '@material-ui/core/colors';
 import GoogleButton from 'react-google-button';
-import background from "./../assets/bg.jpeg"
+import background from "./../assets/bg.jpeg";
 import { ReactComponent as Logo } from './../assets/logo_pa.svg';
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -77,13 +76,11 @@ const useStyles = makeStyles((theme) => ({
     height: '77vh',
   },
   footertext: {
-    color: theme.palette.grey[900],
+    color: theme.palette.grey[100],
   },
   footer: {
     padding: theme.spacing(5, 3),
-    //marginTop: 'auto',
-    backgroundColor:
-      theme.palette.type === 'light' ? green[300] : theme.palette.grey[900],
+    backgroundColor: theme.palette.primary.main
   },
 }));
 
@@ -91,42 +88,36 @@ export default function SignInSide() {
   const classes = useStyles();
 
   const handleClick = () => {
-      window.location = "//localhost:3001/auth/google";
-  }
+    window.location = "//localhost:3001/auth/google";
+  };
 
   return (
-    <div className={classes.root} >
-    <Grid container component="main" className={classes.main} >
-      <CssBaseline />
-      <Grid item xs={false} sm={4} md={7} className={classes.image} >
-          {/* <Typography component="h1" variant="h1" className={classes.title} >
-            Processa Processo
-          </Typography> */}
-      </Grid>
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-        <div className={classes.paper}>
-        <div className={classes.logo}>
-            <Logo />
-            <Typography component="h1" variant="h1" className={classes.title} >
-            Processa Processo
-          </Typography>
+    <div>
+      <div className={classes.root} >
+        <Grid container component="main" className={classes.main} >
+          <CssBaseline />
+          <Grid item xs={false} sm={4} md={7} className={classes.image} >
+          </Grid>
+          <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+            <div className={classes.paper}>
+              <div className={classes.logo}>
+                <Logo />
+                <Typography component="h1" variant="h1" className={classes.title} >
+                  Processa Processo
+                </Typography>
+              </div>
             </div>
-            <div className={classes.google}>
-          <GoogleButton id="loginBttn "
-            onClick={() => {handleClick()}}
-          />
-            </div>   
-        </div>
-      </Grid>
-      </Grid>
+          </Grid>
+        </Grid>
+      </div>
       <footer className={classes.footer}>
         <Container maxWidth="md">
           <Typography variant="body1" className={classes.footertext}>
-              O Processa Processo é feito para advogados, estagiários e demais operadores do Direito,
-                cuja carteira de processos para acompanhamento seja muito grande. <br />
-              O PP automatiza as consultas da movimentação (ou “do andamento”) dos processos. 
-               <br /> <br /> 
-              Copyright © Processa Processo 2021.</Typography>
+            O Processa Processo é feito para advogados, estagiários e demais operadores do Direito,
+            cuja carteira de processos para acompanhamento seja muito grande. <br />
+            O PP automatiza as consultas da movimentação (ou “do andamento”) dos processos.
+            <br /> <br />
+            Copyright © Processa Processo 2021.</Typography>
         </Container>
       </footer>
     </div>
