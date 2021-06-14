@@ -1,6 +1,5 @@
 import React from 'react';
 import Dashboard from '../components/Dashboard';
-import axios from 'axios';
 
 class Overview extends React.Component {
   constructor(props) {

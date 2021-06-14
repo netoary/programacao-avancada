@@ -1,19 +1,15 @@
 import "./App.css";
 import React, { Component, Suspense, lazy } from "react";
-import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
-import Cookies from 'js-cookie';
 import axios from 'axios';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import GoogleButton from 'react-google-button';
 import Button from '@material-ui/core/Button';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import Box from '@material-ui/core/Box';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import BottomNavigation from '@material-ui/core/BottomNavigation';
 
 const Overview = lazy(() => import("./routes/Overview"));
 const SignIn = lazy(() => import("./routes/SignIn"));
