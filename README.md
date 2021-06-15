@@ -2,7 +2,7 @@
 
 In a law firm, one of the weekly workloads consists of monitoring lawsuits, checking for updates. In general, due to the lack of automation involved in the activity, this is done inefficiently, consulting various court sites manually. This project involves a web platform that aims to speed up and increase efficiency in the monitoring process, automating most of the workload.  
 
-A report (in  portuguese) with an in depth explanation of the application and the problem it aims to solve is found in `/relatorio_primeiro_entregavel.pdf`.
+A report (in  portuguese) with an in depth explanation of the application and the problem it aims to solve is found in `/relatorio_segundo_entregavel.pdf`.
 
 ## Running this app
 
