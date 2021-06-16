@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/styles';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
@@ -19,10 +18,6 @@ const styles = theme => ({
   });
 
 class History extends React.Component {
-    constructor(props) {
-        super(props);
-    } 
-
     render() {
         const { classes } = this.props;
 
